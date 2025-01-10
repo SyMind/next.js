@@ -465,15 +465,20 @@ export default async function getBaseWebpackConfig(
     }
 
     return {
-      loader: 'next-swc-loader',
+      loader: isRspack ? 'builtin:next-swc-loader' : 'next-swc-loader',
       options: {
         isServer: isNodeOrEdgeCompilation,
         rootDir: dir,
         pagesDir,
         appDir,
         hasReactRefresh: dev && isClient,
-        nextConfig: config,
-        jsConfig,
+        nextConfig: {
+          modularizeImports: {},
+          experimental: {
+            dynamicIO: false,
+          }
+        },
+        jsConfig: undefined,
         transpilePackages: finalTranspilePackages,
         supportedBrowsers,
         swcCacheDir: path.join(dir, config?.distDir ?? '.next', 'cache', 'swc'),
@@ -1052,11 +1057,7 @@ export default async function getBaseWebpackConfig(
         ? { name: CLIENT_STATIC_FILES_RUNTIME_WEBPACK }
         : undefined,
 
-      minimize:
-        !dev &&
-        (isClient ||
-          isEdgeServer ||
-          (isNodeServer && config.experimental.serverMinification)),
+      minimize: false,
       minimizer: [
         // Minify JavaScript
         (compiler: webpack.Compiler) => {
