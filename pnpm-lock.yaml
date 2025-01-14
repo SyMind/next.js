@@ -119,7 +119,7 @@ importers:
         version: 1.5.10
       '@rspack/core':
         specifier: /Users/bytedance/Documents/github/rspack/packages/rspack
-        version: link:../../rspack/packages/rspack
+        version: link:../../Documents/github/rspack/packages/rspack
       '@svgr/webpack':
         specifier: 5.5.0
         version: 5.5.0
@@ -1004,7 +1004,7 @@ importers:
         version: 1.41.2
       '@rspack/core':
         specifier: /Users/bytedance/Documents/github/rspack/packages/rspack
-        version: link:../../../../rspack/packages/rspack
+        version: link:../../../../Documents/github/rspack/packages/rspack
       '@rspack/plugin-react-refresh':
         specifier: 1.0.1
         version: 1.0.1(react-refresh@0.12.0)
@@ -1028,7 +1028,7 @@ importers:
         version: 8.4.7(patch_hash=3vtnbaj5dhujyrhznezprlo624)(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.3.3)))(react-dom@19.1.0-canary-518d06d2-20241219(react@19.1.0-canary-518d06d2-20241219))(react@19.1.0-canary-518d06d2-20241219)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)
       '@storybook/react-webpack5':
         specifier: ^8.4.7
-        version: 8.4.7(@rspack/core@..+rspack+packages+rspack)(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.3.3)))(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)(react-dom@19.1.0-canary-518d06d2-20241219(react@19.1.0-canary-518d06d2-20241219))(react@19.1.0-canary-518d06d2-20241219)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)
+        version: 8.4.7(@rspack/core@..+Documents+github+rspack+packages+rspack)(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.3.3)))(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)(react-dom@19.1.0-canary-518d06d2-20241219(react@19.1.0-canary-518d06d2-20241219))(react@19.1.0-canary-518d06d2-20241219)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)
       '@storybook/test':
         specifier: ^8.4.7
         version: 8.4.7(storybook@8.4.7(prettier@3.3.3))
@@ -1415,7 +1415,7 @@ importers:
         version: 0.13.4
       sass-loader:
         specifier: 15.0.0
-        version: 15.0.0(@rspack/core@..+rspack+packages+rspack)(sass@1.77.8)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1))
+        version: 15.0.0(@rspack/core@..+Documents+github+rspack+packages+rspack)(sass@1.77.8)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1))
       schema-utils2:
         specifier: npm:schema-utils@2.7.1
         version: schema-utils@2.7.1
@@ -20534,7 +20534,7 @@ snapshots:
       react: 19.1.0-canary-518d06d2-20241219
       react-dom: 19.1.0-canary-518d06d2-20241219(react@19.1.0-canary-518d06d2-20241219)
 
-  '@storybook/builder-webpack5@8.4.7(@rspack/core@..+rspack+packages+rspack)(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)':
+  '@storybook/builder-webpack5@8.4.7(@rspack/core@..+Documents+github+rspack+packages+rspack)(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)':
     dependencies:
       '@storybook/core-webpack': 8.4.7(storybook@8.4.7(prettier@3.3.3))
       '@types/node': 20.17.6
@@ -20543,10 +20543,10 @@ snapshots:
       case-sensitive-paths-webpack-plugin: 2.4.0
       cjs-module-lexer: 1.4.1
       constants-browserify: 1.0.0
-      css-loader: 6.11.0(@rspack/core@..+rspack+packages+rspack)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1))
+      css-loader: 6.11.0(@rspack/core@..+Documents+github+rspack+packages+rspack)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1))
       es-module-lexer: 1.5.4
       fork-ts-checker-webpack-plugin: 8.0.0(typescript@5.7.2)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1))
-      html-webpack-plugin: 5.6.3(@rspack/core@..+rspack+packages+rspack)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1))
+      html-webpack-plugin: 5.6.3(@rspack/core@..+Documents+github+rspack+packages+rspack)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1))
       magic-string: 0.30.17
       path-browserify: 1.0.1
       process: 0.11.10
@@ -20678,9 +20678,9 @@ snapshots:
       react-dom: 19.1.0-canary-518d06d2-20241219(react@19.1.0-canary-518d06d2-20241219)
       storybook: 8.4.7(prettier@3.3.3)
 
-  '@storybook/react-webpack5@8.4.7(@rspack/core@..+rspack+packages+rspack)(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.3.3)))(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)(react-dom@19.1.0-canary-518d06d2-20241219(react@19.1.0-canary-518d06d2-20241219))(react@19.1.0-canary-518d06d2-20241219)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)':
+  '@storybook/react-webpack5@8.4.7(@rspack/core@..+Documents+github+rspack+packages+rspack)(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.3.3)))(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)(react-dom@19.1.0-canary-518d06d2-20241219(react@19.1.0-canary-518d06d2-20241219))(react@19.1.0-canary-518d06d2-20241219)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)':
     dependencies:
-      '@storybook/builder-webpack5': 8.4.7(@rspack/core@..+rspack+packages+rspack)(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)
+      '@storybook/builder-webpack5': 8.4.7(@rspack/core@..+Documents+github+rspack+packages+rspack)(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)
       '@storybook/preset-react-webpack': 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.3.3)))(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)(react-dom@19.1.0-canary-518d06d2-20241219(react@19.1.0-canary-518d06d2-20241219))(react@19.1.0-canary-518d06d2-20241219)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)
       '@storybook/react': 8.4.7(patch_hash=3vtnbaj5dhujyrhznezprlo624)(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.3.3)))(react-dom@19.1.0-canary-518d06d2-20241219(react@19.1.0-canary-518d06d2-20241219))(react@19.1.0-canary-518d06d2-20241219)(storybook@8.4.7(prettier@3.3.3))(typescript@5.7.2)
       '@types/node': 20.17.6
@@ -23486,7 +23486,7 @@ snapshots:
       postcss: 8.4.31
       postcss-selector-parser: 6.0.11
 
-  css-loader@6.11.0(@rspack/core@..+rspack+packages+rspack)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)):
+  css-loader@6.11.0(@rspack/core@..+Documents+github+rspack+packages+rspack)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)):
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.49)
       postcss: 8.4.49
@@ -23497,7 +23497,7 @@ snapshots:
       postcss-value-parser: 4.2.0
       semver: 7.6.3
     optionalDependencies:
-      '@rspack/core': link:../../rspack/packages/rspack
+      '@rspack/core': link:../../Documents/github/rspack/packages/rspack
       webpack: 5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)
 
   css-prefers-color-scheme@6.0.3(postcss@8.4.31):
@@ -26375,7 +26375,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  html-webpack-plugin@5.6.3(@rspack/core@..+rspack+packages+rspack)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)):
+  html-webpack-plugin@5.6.3(@rspack/core@..+Documents+github+rspack+packages+rspack)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)):
     dependencies:
       '@types/html-minifier-terser': 6.1.0
       html-minifier-terser: 6.1.0
@@ -26383,7 +26383,7 @@ snapshots:
       pretty-error: 4.0.0
       tapable: 2.2.1
     optionalDependencies:
-      '@rspack/core': link:../../rspack/packages/rspack
+      '@rspack/core': link:../../Documents/github/rspack/packages/rspack
       webpack: 5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)
 
   htmlparser2@3.10.1:
@@ -32057,11 +32057,11 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass-loader@15.0.0(@rspack/core@..+rspack+packages+rspack)(sass@1.77.8)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)):
+  sass-loader@15.0.0(@rspack/core@..+Documents+github+rspack+packages+rspack)(sass@1.77.8)(webpack@5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)):
     dependencies:
       neo-async: 2.6.2
     optionalDependencies:
-      '@rspack/core': link:../../rspack/packages/rspack
+      '@rspack/core': link:../../Documents/github/rspack/packages/rspack
       sass: 1.77.8
       webpack: 5.96.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.23.1)
 
