@@ -36,6 +36,7 @@ import type { CustomRoutes } from '../../../lib/load-custom-routes'
 import { isInterceptionRouteRewrite } from '../../../lib/generate-interception-routes-rewrites'
 import { getDynamicCodeEvaluationError } from './wellknown-errors-plugin/parse-dynamic-code-evaluation-error'
 import { getModuleReferencesInOrder } from '../utils'
+import { getAstGrep } from '../../../shared/lib/get-rspack'
 
 const KNOWN_SAFE_DYNAMIC_PACKAGES =
   require('../../../lib/known-edge-safe-packages.json') as string[]
@@ -378,6 +379,117 @@ function registerUnsupportedApiHooks(
   parser.hooks.expressionMemberChain
     .for('process')
     .tap(NAME, warnForUnsupportedProcessApi)
+}
+
+async function analyzeCodeByAstGrep(
+  compilation: webpack.Compilation,
+  module: webpack.NormalModule
+) {
+  const originalSource = module.originalSource()
+  if (!originalSource) {
+    return
+  }
+  const source = originalSource.source()
+  if (typeof source !== 'string') {
+    return
+  }
+
+  const { parseAsync, Lang } = getAstGrep()
+  const ast = await parseAsync(Lang.JavaScript, source)
+  const root = ast.root()
+
+  const nodes = root.findAll({
+    rule: {
+      any: [
+        // Unsupported Api
+        {
+          all: [
+            {
+              pattern: 'process.$$$',
+            },
+            {
+              not: {
+                pattern: 'process.env',
+              },
+            },
+          ],
+        },
+        ...EDGE_UNSUPPORTED_NODE_APIS.map((api) => ({
+          pattern: api,
+        })),
+
+        // import & import call
+        {
+          kind: 'import_statement',
+          has: {
+            field: 'source',
+            pattern: '$SOURCE',
+          },
+        },
+        {
+          kind: 'call_expression',
+          has: {
+            field: 'arguments',
+            has: {
+              type: 'string',
+              pattern: '$SOURCE',
+            },
+          },
+        },
+      ],
+    },
+  })
+
+  for (const node of nodes) {
+    const loc = node.range()
+    const importedModule = node.getMatch('SOURCE')
+    if (importedModule) {
+      if (
+        isNodeJsModule(importedModule) &&
+        !SUPPORTED_NATIVE_MODULES.includes(importedModule)
+      ) {
+        const buildInfo = getModuleBuildInfo(module)
+        if (!buildInfo.importLocByPath) {
+          buildInfo.importLocByPath = new Map()
+        }
+
+        buildInfo.importLocByPath.set(importedModule, {
+          sourcePosition: {
+            ...loc.start,
+            source: module.identifier(),
+          },
+          sourceContent: source,
+        })
+
+        compilation.warnings.push(
+          buildWebpackError({
+            message: `A Node.js module is loaded ('${importedModule}' at line ${loc.start.line}) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime`,
+            compilation,
+            parser: {
+              state: {
+                module,
+              },
+            } as any,
+            loc,
+          })
+        )
+      }
+    } else {
+      compilation.warnings.push(
+        buildUnsupportedApiError({
+          compilation,
+          apiName: node.text(),
+          loc,
+          parser: {
+            state: {
+              module,
+            },
+          } as any,
+        })
+      )
+    }
+  }
 }
 
 function getCodeAnalyzer(params: {
@@ -784,18 +896,40 @@ export default class MiddlewarePlugin {
 
   public apply(compiler: webpack.Compiler) {
     compiler.hooks.compilation.tap(NAME, (compilation, params) => {
-      const { hooks } = params.normalModuleFactory
-      /**
-       * This is the static code analysis phase.
-       */
-      const codeAnalyzer = getCodeAnalyzer({
-        dev: this.dev,
-        compiler,
-        compilation,
-      })
+      if (process.env.NEXT_RSPACK) {
+        // Parser hooks are not available in Rspack,
+        // so we use ast-grep to analyze the code when running under Rspack.
+        compilation.hooks.finishModules.tapPromise(NAME, async (modules) => {
+          const tasks = []
+          for (const module of modules) {
+            if (module.constructor.name === 'NormalModule') {
+              if (
+                module.layer === WEBPACK_LAYERS.middleware ||
+                module.layer === WEBPACK_LAYERS.apiEdge
+              ) {
+                tasks.push(
+                  analyzeCodeByAstGrep(
+                    compilation,
+                    module as webpack.NormalModule
+                  )
+                )
+              }
+            }
+          }
+          await Promise.all(tasks)
+        })
+      } else {
+        const { hooks } = params.normalModuleFactory
 
-      // parser hooks aren't available in rspack
-      if (!process.env.NEXT_RSPACK) {
+        /**
+         * This is the static code analysis phase.
+         */
+        const codeAnalyzer = getCodeAnalyzer({
+          dev: this.dev,
+          compiler,
+          compilation,
+        })
+
         hooks.parser.for('javascript/auto').tap(NAME, codeAnalyzer)
         hooks.parser.for('javascript/dynamic').tap(NAME, codeAnalyzer)
         hooks.parser.for('javascript/esm').tap(NAME, codeAnalyzer)
