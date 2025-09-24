@@ -58,7 +58,7 @@ use turbopack_core::{
     file_source::FileSource,
     ident::Layer,
     issue::{
-        Issue, IssueDescriptionExt, IssueExt, IssueSeverity, IssueStage, OptionStyledString,
+        CollectibleIssuesExt, Issue, IssueExt, IssueSeverity, IssueStage, OptionStyledString,
         StyledString,
     },
     module::Module,
@@ -290,6 +290,11 @@ impl ProjectContainer {
 }
 
 #[turbo_tasks::function(operation)]
+fn project_operation(project: ResolvedVc<ProjectContainer>) -> Vc<Project> {
+    project.project()
+}
+
+#[turbo_tasks::function(operation)]
 fn project_fs_operation(project: ResolvedVc<Project>) -> Vc<DiskFileSystem> {
     project.project_fs()
 }
@@ -344,7 +349,8 @@ impl ProjectContainer {
             preview_props,
         } = options;
 
-        let this = self.await?;
+        let resolved_self = self.to_resolved().await?;
+        let this = resolved_self.await?;
 
         let mut new_options = this
             .options_state
@@ -386,7 +392,9 @@ impl ProjectContainer {
         // TODO: Handle mode switch, should prevent mode being switched.
         let watch = new_options.watch;
 
-        let project = self.project().to_resolved().await?;
+        let project = project_operation(resolved_self)
+            .resolve_strongly_consistent()
+            .await?;
         let prev_project_fs = project_fs_operation(project)
             .read_strongly_consistent()
             .await?;
@@ -395,7 +403,9 @@ impl ProjectContainer {
             .await?;
 
         this.options_state.set(Some(new_options));
-        let project = self.project().to_resolved().await?;
+        let project = project_operation(resolved_self)
+            .resolve_strongly_consistent()
+            .await?;
         let project_fs = project_fs_operation(project)
             .read_strongly_consistent()
             .await?;
@@ -805,9 +815,9 @@ impl Project {
         let node_execution_chunking_context = Vc::upcast(
             NodeJsChunkingContext::builder(
                 self.project_root_path().owned().await?,
-                node_root.clone(),
+                node_root.join("build")?,
                 self.node_root_to_root_path().owned().await?,
-                node_root.clone(),
+                node_root.join("build")?,
                 node_root.join("build/chunks")?,
                 node_root.join("build/assets")?,
                 node_build_environment().to_resolved().await?,
@@ -960,7 +970,7 @@ impl Project {
         async move {
             let module_graphs_op = whole_app_module_graph_operation(self);
             let module_graphs_vc = module_graphs_op.resolve_strongly_consistent().await?;
-            let _ = module_graphs_op.take_issues_with_path().await?;
+            let _ = module_graphs_op.take_issues().await?;
 
             // At this point all modules have been computed and we can get rid of the node.js
             // process pools
@@ -1401,6 +1411,8 @@ impl Project {
         Ok(find_context_file(
             self.project_path().owned().await?,
             middleware_files(self.next_config().page_extensions()),
+            // our callers do not care about affecting sources
+            false,
         ))
     }
 
@@ -1560,6 +1572,8 @@ impl Project {
         Ok(find_context_file(
             self.project_path().owned().await?,
             instrumentation_files(self.next_config().page_extensions()),
+            // our callers do not care about affecting sources
+            false,
         ))
     }
 
