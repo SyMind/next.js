@@ -25,6 +25,11 @@ function updatePackageJson(filePath, packageName) {
     const packageJson = JSON.parse(fs.readFileSync(filePath, 'utf8'))
     packageJson.name = packageName
 
+    if (packageJson.dependencies?.['@next/rspack-binding']) {
+      packageJson.dependencies['@next/rspack-binding'] =
+        `workspace:${bindingPackageName}@*`
+    }
+
     // Update repository URL to match current GitHub repo for provenance validation
     if (packageJson.repository && packageJson.repository.url) {
       const githubRepo = process.env.GITHUB_REPOSITORY

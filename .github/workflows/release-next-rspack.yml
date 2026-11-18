@@ -89,7 +89,7 @@ jobs:
           # Do not use restore-keys since it leads to indefinite growth of the cache.
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
         working-directory: ./rspack
 
       - name: Get NAPI info
